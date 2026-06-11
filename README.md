@@ -15,7 +15,7 @@
 - Web-UI erreichbar unter `http://pollencuboid.local`
 - OTA-Firmware-Update direkt aus der Web-Oberfläche
 
-### Pinbelegung (ESP32-S3 Super Mini N8R8)
+### Pinbelegung (ESP32-S3 Super Mini)
 
 | Funktion       | GPIO |
 |----------------|------|
