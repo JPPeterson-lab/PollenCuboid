@@ -6,7 +6,7 @@
 
 ## Deutsch
 
-**Pollencuboid** ist ein ESP32-basiertes Display-Gerät, das aktuelle Pollenwerte und Wetterdaten auf einem 2,4"-TFT-Display anzeigt. Pollenflugdaten stammen vom Deutschen Wetterdienst (DWD), Wetterdaten von Open-Meteo. Das Gerät wird über ein WLAN-Captive-Portal konfiguriert und bietet eine Web-Oberfläche zur Einstellung von Ort, Pollenregion, Helligkeit und Warnungen.
+**Pollencuboid** ist ein ESP32-basiertes Display, das aktuelle Pollenwerte und Wetterdaten auf einem 2,4"-TFT-Display anzeigt. Pollenflugdaten stammen vom Deutschen Wetterdienst (DWD), Wetterdaten von Open-Meteo. Das Gerät wird über ein WLAN-Captive-Portal konfiguriert und bietet eine Web-Oberfläche zur Einstellung von Ort, Pollenregion, Helligkeit und Warnungen.
 
 ### Funktionen
 - Anzeige von Pollenflug für 8 Pollenarten (Birke, Hasel, Erle, Esche, Gräser, Roggen, Beifuß, Ambrosia)
@@ -14,6 +14,7 @@
 - Farbkodierte Warnanzeige bei erhöhtem Pollenflug
 - Web-UI erreichbar unter `http://pollencuboid.local`
 - OTA-Firmware-Update direkt aus der Web-Oberfläche
+- Automatische Dimmfunktion
 
 ### Pinbelegung (ESP32-S3 Super Mini)
 
