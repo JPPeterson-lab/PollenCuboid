@@ -22,7 +22,7 @@
 **Erster öffentlicher Release / First public release**
 
 ### Hardware
-- ESP32-S3 Super Mini N8R8 (8 MB Flash, kein PSRAM)
+- ESP32-S3 Super Mini (4 MB Flash, kein PSRAM)
 - ST7789V 2.4" SPI-Display (GMT024-08-SPI8P), 320×240 px
 - Touch-Taster an GPIO 5
 
