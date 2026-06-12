@@ -11,6 +11,7 @@
 
 const lv_font_t* ui_get_font_by_name(const char* name) {
     if (name == NULL) return NULL;
+    if (strcmp(name, "font_0717f753465d8037800829e0a27bf73d") == 0) return &font_0717f753465d8037800829e0a27bf73d;
     if (strcmp(name, "font_724e1ec1161c8007800826026d494c78") == 0) return &font_724e1ec1161c8007800826026d494c78;
     if (strcmp(name, "font_724e1ec1161c8007800826026d494c79") == 0) return &font_724e1ec1161c8007800826026d494c79;
     if (strcmp(name, "font_724e1ec1161c8007800826026d494c7a") == 0) return &font_724e1ec1161c8007800826026d494c7a;

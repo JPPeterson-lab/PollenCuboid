@@ -29,7 +29,7 @@
 #include "src/ui/screens.h"
 #include "src/ui/images.h"
 // ── Version ───────────────────────────────────────────────────────────────────
-#define FIRMWARE_VERSION "0.1.0-beta"
+#define FIRMWARE_VERSION "0.2.0-beta"
 #define OTA_VERSION_URL  "https://raw.githubusercontent.com/JPPeterson-lab/Pollencuboid/main/version.json"
 #define OTA_BIN_BASE_URL "https://github.com/JPPeterson-lab/Pollencuboid/releases/download/"
 
@@ -101,14 +101,15 @@ bool    cfg_pollen_warn   = true;
 
 // ── Pollen-Daten (DWD, Skala 0–3) ────────────────────────────────────────────
 struct PollenData {
-    float hasel    = -1;
-    float erle     = -1;
-    float esche    = -1;
-    float birke    = -1;
-    float graeser  = -1;
-    float roggen   = -1;
-    float beifuss  = -1;
-    float ambrosia = -1;
+    // heute
+    float hasel = -1, erle = -1, esche = -1, birke = -1;
+    float graeser = -1, roggen = -1, beifuss = -1, ambrosia = -1;
+    // morgen
+    float hasel_t = -1, erle_t = -1, esche_t = -1, birke_t = -1;
+    float graeser_t = -1, roggen_t = -1, beifuss_t = -1, ambrosia_t = -1;
+    // übermorgen
+    float hasel_d = -1, erle_d = -1, esche_d = -1, birke_d = -1;
+    float graeser_d = -1, roggen_d = -1, beifuss_d = -1, ambrosia_d = -1;
 };
 PollenData pollen;
 
@@ -203,7 +204,7 @@ static const char* pollenText(float val) {
     if (val <= 1.0) return "gering";
     if (val <= 2.0) return "mittel";
     if (val <= 2.5) return "hoch";
-    return                 "sehr hoch";
+    return                 "stark";
 }
 
 void updatePollenLabel(lv_obj_t *lbl, float val) {
@@ -224,8 +225,25 @@ void updateUI() {
                                     LV_PART_MAIN | LV_STATE_DEFAULT);
     }
 
-    // Wetter-Icon (day_clear als Platzhalter — bei Bedarf erweitern)
-    lv_img_set_src(objects.imagewetter, &day_clear);
+    // Wetter-Icon nach WMO-Code
+    if (objects.imagewetter) {
+        const lv_img_dsc_t *icon;
+        if (wetter_code == 0 || wetter_code == 1)
+            icon = &day_clear;
+        else if (wetter_code == 45 || wetter_code == 48)
+            icon = &ui_img_fog_png;
+        else if ((wetter_code >= 51 && wetter_code <= 67) ||
+                 (wetter_code >= 80 && wetter_code <= 82))
+            icon = &ui_img_rain_png;
+        else if ((wetter_code >= 71 && wetter_code <= 77) ||
+                 wetter_code == 85 || wetter_code == 86)
+            icon = &ui_img_snow_png;
+        else if (wetter_code >= 95)
+            icon = &ui_img_thunder_png;
+        else
+            icon = &ui_img_overcast_png;
+        lv_img_set_src(objects.imagewetter, icon);
+    }
 
     // Uhrzeit
     struct tm ti;
@@ -244,6 +262,36 @@ void updateUI() {
     updatePollenLabel(objects.labelhaselwert,    pollen.hasel);
     updatePollenLabel(objects.labeleschewert,    pollen.esche);
     updatePollenLabel(objects.labelroggenwert,   pollen.roggen);
+}
+
+void updateForecastUI() {
+    // Screen SCREENFORECAST: Birke, Gräser, Erle, Beifuß
+    updatePollenLabel(objects.labelbirkeday1,   pollen.birke);
+    updatePollenLabel(objects.labelbirkeday2,   pollen.birke_t);
+    updatePollenLabel(objects.labelbirkeday3,   pollen.birke_d);
+    updatePollenLabel(objects.labelgraeserday1, pollen.graeser);
+    updatePollenLabel(objects.labelgraeserday2, pollen.graeser_t);
+    updatePollenLabel(objects.labelgraeserday3, pollen.graeser_d);
+    updatePollenLabel(objects.labelerleday1,    pollen.erle);
+    updatePollenLabel(objects.labelerleday2,    pollen.erle_t);
+    updatePollenLabel(objects.labelerleday3,    pollen.erle_d);
+    updatePollenLabel(objects.labelbeifussday1, pollen.beifuss);
+    updatePollenLabel(objects.labelbeifussday2, pollen.beifuss_t);
+    updatePollenLabel(objects.labelbeifussday3, pollen.beifuss_d);
+
+    // Screen SCREENFORECAST2: Ambrosia, Hasel, Esche, Roggen
+    updatePollenLabel(objects.labelambrosiaday1, pollen.ambrosia);
+    updatePollenLabel(objects.labelambrosiaday2, pollen.ambrosia_t);
+    updatePollenLabel(objects.labelambrosiaday3, pollen.ambrosia_d);
+    updatePollenLabel(objects.labelhaselday1,    pollen.hasel);
+    updatePollenLabel(objects.labelhaselday2,    pollen.hasel_t);
+    updatePollenLabel(objects.labelhaselday3,    pollen.hasel_d);
+    updatePollenLabel(objects.labelescheday1,    pollen.esche);
+    updatePollenLabel(objects.labelescheday2,    pollen.esche_t);
+    updatePollenLabel(objects.labelescheday3,    pollen.esche_d);
+    updatePollenLabel(objects.labelroggenday1,   pollen.roggen);
+    updatePollenLabel(objects.labelroggenday2,   pollen.roggen_t);
+    updatePollenLabel(objects.labelroggenday3,   pollen.roggen_d);
 }
 
 // =============================================================================
@@ -324,14 +372,32 @@ bool fetchPollenDWD() {
     for (JsonObject region : content) {
         if (region["region_id"].as<int>() != cfg_dwd_region) continue;
         JsonObject p = region["Pollen"];
-        pollen.hasel    = parseDwdWert(p["Hasel"]["today"]           | "");
-        pollen.erle     = parseDwdWert(p["Erle"]["today"]            | "");
-        pollen.esche    = parseDwdWert(p["Esche"]["today"]           | "");
-        pollen.birke    = parseDwdWert(p["Birke"]["today"]           | "");
-        pollen.graeser  = parseDwdWert(p["Graeser"]["today"]           | "");
-        pollen.roggen   = parseDwdWert(p["Roggen"]["today"]          | "");
-        pollen.beifuss  = parseDwdWert(p["Beifuss"]["today"]         | "");
-        pollen.ambrosia = parseDwdWert(p["Ambrosia"]["today"]        | "");
+        pollen.hasel    = parseDwdWert(p["Hasel"]["today"]      | "");
+        pollen.erle     = parseDwdWert(p["Erle"]["today"]       | "");
+        pollen.esche    = parseDwdWert(p["Esche"]["today"]      | "");
+        pollen.birke    = parseDwdWert(p["Birke"]["today"]      | "");
+        pollen.graeser  = parseDwdWert(p["Graeser"]["today"]    | "");
+        pollen.roggen   = parseDwdWert(p["Roggen"]["today"]     | "");
+        pollen.beifuss  = parseDwdWert(p["Beifuss"]["today"]    | "");
+        pollen.ambrosia = parseDwdWert(p["Ambrosia"]["today"]   | "");
+
+        pollen.hasel_t    = parseDwdWert(p["Hasel"]["tomorrow"]    | "");
+        pollen.erle_t     = parseDwdWert(p["Erle"]["tomorrow"]     | "");
+        pollen.esche_t    = parseDwdWert(p["Esche"]["tomorrow"]    | "");
+        pollen.birke_t    = parseDwdWert(p["Birke"]["tomorrow"]    | "");
+        pollen.graeser_t  = parseDwdWert(p["Graeser"]["tomorrow"]  | "");
+        pollen.roggen_t   = parseDwdWert(p["Roggen"]["tomorrow"]   | "");
+        pollen.beifuss_t  = parseDwdWert(p["Beifuss"]["tomorrow"]  | "");
+        pollen.ambrosia_t = parseDwdWert(p["Ambrosia"]["tomorrow"] | "");
+
+        pollen.hasel_d    = parseDwdWert(p["Hasel"]["dayafter_to"]    | "");
+        pollen.erle_d     = parseDwdWert(p["Erle"]["dayafter_to"]     | "");
+        pollen.esche_d    = parseDwdWert(p["Esche"]["dayafter_to"]    | "");
+        pollen.birke_d    = parseDwdWert(p["Birke"]["dayafter_to"]    | "");
+        pollen.graeser_d  = parseDwdWert(p["Graeser"]["dayafter_to"]  | "");
+        pollen.roggen_d   = parseDwdWert(p["Roggen"]["dayafter_to"]   | "");
+        pollen.beifuss_d  = parseDwdWert(p["Beifuss"]["dayafter_to"]  | "");
+        pollen.ambrosia_d = parseDwdWert(p["Ambrosia"]["dayafter_to"] | "");
         return true;
     }
     return false;
@@ -711,6 +777,7 @@ void setup() {
     fetchWetter();
     fetchPollenDWD();
     updateUI();
+    updateForecastUI();
     checkPollenWarnung();
 
     if (!pollenWarnAktiv)
@@ -728,7 +795,7 @@ void loop() {
     lv_timer_handler();
     ui_tick();
 
-    // Touch-Button: Warnscreen bestätigen oder Display aufwecken
+    // Touch-Button: Warnscreen bestätigen oder Screens durchschalten
     if (btnPressed) {
         btnPressed = false;
         wakeDisplay();
@@ -736,6 +803,14 @@ void loop() {
             pollenWarnAktiv      = false;
             pollenWarnBestaetigt = true;
             loadScreen(SCREEN_ID_SCREEN_1);
+        } else {
+            lv_obj_t *cur = lv_scr_act();
+            if (cur == objects.screen_1)
+                loadScreen(SCREEN_ID_SCREENFORECAST);
+            else if (cur == objects.screenforecast)
+                loadScreen(SCREEN_ID_SCREENFORECAST2);
+            else
+                loadScreen(SCREEN_ID_SCREEN_1);
         }
     }
 
@@ -748,6 +823,7 @@ void loop() {
         fetchWetter();
         fetchPollenDWD();
         updateUI();
+        updateForecastUI();
         checkPollenWarnung();
     }
 
@@ -755,6 +831,7 @@ void loop() {
     if (millis() - lastUiUpdate >= 60000) {
         lastUiUpdate = millis();
         updateUI();
+        updateForecastUI();
     }
 
     // Display dimmen nach Inaktivität

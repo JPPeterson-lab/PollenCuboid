@@ -12,33 +12,73 @@ typedef struct _objects_t {
     lv_obj_t *uiscreenwarnungpollen;
     lv_obj_t *screenboot;
     lv_obj_t *screen_1;
+    lv_obj_t *screenforecast2;
+    lv_obj_t *screenforecast;
     lv_obj_t *labelgraeserwert;
+    lv_obj_t *labelday3;
     lv_obj_t *labelnameerle;
     lv_obj_t *labelpollenwarntitel;
+    lv_obj_t *labelgraeserday1;
+    lv_obj_t *labelnameesche;
+    lv_obj_t *labelbeifussday1;
     lv_obj_t *imagewetter;
     lv_obj_t *labelpollenwarnart;
     lv_obj_t *labelbirkewert;
     lv_obj_t *labelambrosiawert;
     lv_obj_t *labelnamegraeser;
+    lv_obj_t *labelbirkeday1;
     lv_obj_t *barwifi;
+    lv_obj_t *labelambrosiaday3;
     lv_obj_t *labelroggenwert;
     lv_obj_t *image_1;
-    lv_obj_t *labeltime;
-    lv_obj_t *labelnameesche;
+    lv_obj_t *labelday1;
+    lv_obj_t *labelhaselday3;
+    lv_obj_t *labelgraeserday3;
+    lv_obj_t *labelday3_1;
+    lv_obj_t *labelday2;
     lv_obj_t *labelnameroggen;
+    lv_obj_t *labeltime;
+    lv_obj_t *labelnameambrosia;
+    lv_obj_t *labelnameesche_1;
+    lv_obj_t *labelroggenday1;
+    lv_obj_t *labelnameroggen_1;
+    lv_obj_t *label_1;
     lv_obj_t *labelerlewert;
+    lv_obj_t *labelerleday2;
     lv_obj_t *labelnamebeifuss;
     lv_obj_t *labelcuboid;
+    lv_obj_t *labelroggenday3;
+    lv_obj_t *labelnamebirke;
     lv_obj_t *labelhaselwert;
-    lv_obj_t *labelnameambrosia;
+    lv_obj_t *labelbirkeday2;
+    lv_obj_t *labelambrosiaday2;
+    lv_obj_t *labelnameambrosia_1;
     lv_obj_t *labeleschewert;
+    lv_obj_t *labelhaselday2;
+    lv_obj_t *labelhaselday1;
+    lv_obj_t *labelgraeserday2;
+    lv_obj_t *labelnamegraeser_1;
     lv_obj_t *labelstatus;
     lv_obj_t *labelbeifusswert;
+    lv_obj_t *labelescheday1;
+    lv_obj_t *labelnamebeifuss_1;
+    lv_obj_t *labelday2_1;
+    lv_obj_t *labelescheday3;
     lv_obj_t *labelnamehasel;
-    lv_obj_t *labelnamebirke;
+    lv_obj_t *labelambrosiaday1;
+    lv_obj_t *labelerleday3;
+    lv_obj_t *labelnameerle_1;
+    lv_obj_t *labelnamehasel_1;
+    lv_obj_t *labelbirkeday3;
+    lv_obj_t *labelerleday1;
+    lv_obj_t *labelescheday2;
+    lv_obj_t *labelbeifussday3;
+    lv_obj_t *labelnamebirke_1;
+    lv_obj_t *labelbeifussday2;
     lv_obj_t *labelauthor;
     lv_obj_t *labelpollenwarnhint;
     lv_obj_t *labeltemp;
+    lv_obj_t *labelroggenday2;
     lv_obj_t *unnamed;
 } objects_t;
 
@@ -48,6 +88,8 @@ enum ScreensEnum {
     SCREEN_ID_UISCREENWARNUNGPOLLEN = 1,
     SCREEN_ID_SCREENBOOT = 2,
     SCREEN_ID_SCREEN_1 = 3,
+    SCREEN_ID_SCREENFORECAST2 = 4,
+    SCREEN_ID_SCREENFORECAST = 5,
 };
 
 void create_screen_uiscreenwarnungpollen();
@@ -59,6 +101,12 @@ void delete_screen_screenboot();
 void create_screen_screen_1();
 void tick_screen_screen_1();
 void delete_screen_screen_1();
+void create_screen_screenforecast2();
+void tick_screen_screenforecast2();
+void delete_screen_screenforecast2();
+void create_screen_screenforecast();
+void tick_screen_screenforecast();
+void delete_screen_screenforecast();
 
 void tick_screen_by_id(enum ScreensEnum screenId);
 void tick_screen(int screen_index);

@@ -3,7 +3,17 @@
 
 #include "src/ui/images/day_clear.inc"
 #include "src/ui/images/alert.inc"
-const ext_img_desc_t images[2] = {
+#include "src/ui/images/overcast.inc"
+#include "src/ui/images/fog.inc"
+#include "src/ui/images/rain.inc"
+#include "src/ui/images/snow.inc"
+#include "src/ui/images/thunder.inc"
+const ext_img_desc_t images[7] = {
     { "day_clear", &day_clear },
-    { "alert", &alert }
+    { "alert",     &alert },
+    { "overcast",  &ui_img_overcast_png },
+    { "fog",       &ui_img_fog_png },
+    { "rain",      &ui_img_rain_png },
+    { "snow",      &ui_img_snow_png },
+    { "thunder",   &ui_img_thunder_png },
 };

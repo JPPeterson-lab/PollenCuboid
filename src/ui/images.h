@@ -19,7 +19,12 @@ typedef struct _ext_img_desc_t {
 
 extern const lv_img_dsc_t day_clear;
 extern const lv_img_dsc_t alert;
-extern const ext_img_desc_t images[2];
+extern const lv_img_dsc_t ui_img_overcast_png;
+extern const lv_img_dsc_t ui_img_fog_png;
+extern const lv_img_dsc_t ui_img_rain_png;
+extern const lv_img_dsc_t ui_img_snow_png;
+extern const lv_img_dsc_t ui_img_thunder_png;
+extern const ext_img_desc_t images[7];
 
 
 #ifdef __cplusplus
