@@ -1,4 +1,4 @@
-# 🌿 Pollencuboid
+# 🌿 PollenCuboid
 
 > **⚠️ Beta-Version:** Dieses Projekt befindet sich noch in aktiver Entwicklung. Fehler und Breaking Changes sind möglich. / This project is still in active development. Bugs and breaking changes may occur.
 
@@ -129,7 +129,7 @@ Die enthaltenen Wetter-Icons unterliegen der **CC BY-SA 4.0**-Lizenz ([Dovora We
 ---
 ---
 
-# 🌿 Pollencuboid (English)
+# 🌿 PollenCuboid (English)
 
 A compact Wi-Fi pollen display based on the **ESP32-S3 Super Mini**, showing current pollen levels and weather data on a 2.4" color display.
 This is a sister project of [WetterCube](https://github.com/JPPeterson-lab/wettercube), designed specifically for pollen allergy sufferers.
