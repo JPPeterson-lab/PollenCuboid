@@ -2,6 +2,21 @@
 
 ---
 
+## 0.2.0-beta — 2026-06-12
+
+### Neu
+- **2 Forecast-Screens** mit 3-Tage-Pollenvorhersage (heute / morgen / übermorgen)
+  - Screen A: Birke, Gräser, Erle, Beifuß
+  - Screen B: Ambrosia, Hasel, Esche, Roggen
+  - Durchschalten per Tastendruck: Hauptscreen → Forecast A → Forecast B → zurück
+- **Wetter-Icons** nach WMO-Code (klar, bewölkt, Regen, Schnee, Gewitter, Nebel)
+  - Icons: Dovora Weather Icons (CC BY-SA 4.0), übernommen aus WetterCube
+- **DWD-API** liest jetzt `today`, `tomorrow` und `dayafter_to` für alle 8 Allergene
+- Pollenbelastungsstufe „sehr hoch" umbenannt in **„stark"**
+- `tools/apply_picopixel_export.sh` — automatisiert alle nötigen Korrekturen nach jedem PicoPixel-Export (lvgl-Include, .c→.inc, ui.c/ui.h Patches, Wetter-Icons)
+
+---
+
 ## 0.1.0-beta — 2026-06-11
 
 **Erster öffentlicher Release / First public release**
